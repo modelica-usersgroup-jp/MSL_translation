@@ -1,5 +1,3 @@
-# Make merged library file for MapleSim from descrete library structure
-
 import os # Directry Operation
 import re # Regular Expression
 
@@ -10,19 +8,19 @@ def classload(cn):
     fn = fn.rstrip()
     if os.path.isdir(fn):
       os.chdir(fn)
-      classload(fn)
+      classload(fn) # recursive execution
       os.chdir('..')
     elif len(fn.split('.')) == 2:
-      if re.search('_anno', fn.split('.')[0]):
+      if re.search('_anno', fn.split('.')[0]): # when *_anno.*
         print(fn)
         pmo = open(fn, 'r')
-        pmoa = open('tmp', 'w')
+        pmoa = open('tmp', 'w') # output file
         lncat = ''
         for pmol in pmo:
-          if re.search("<html>", pmol):
+          if re.search("<html>", pmol): # html part begin
             pmoa.write(pmol)
-          elif re.search("</html>", pmol):
-            if lncat != '':
+          elif re.search("</html>", pmol): # html part end
+            if lncat != '': # insert \n 
               #lncat = lncat.replace('\. +([A-Z])', ".\n " + m.group(0))
               lncat = lncat.replace('<p>', "\n<p>")
               lncat = lncat.replace('</p>', "</p>\n")
@@ -41,7 +39,7 @@ def classload(cn):
               lncat = ''
             pmoa.write('\n' + pmol)
           else:
-            if re.search('//', pmol):
+            if re.search('//', pmol): #insert \n in comment line
               lncat = lncat + '\n' + pmol
             else:
               lncat = lncat + pmol.rstrip() + ' '
