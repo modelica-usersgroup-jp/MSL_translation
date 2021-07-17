@@ -39,8 +39,10 @@ def classload(cn):
               lncat = ''
             pmoa.write('\n' + pmol)
           else:
-            if re.search('//', pmol): #insert \n in comment line
-              lncat = lncat + '\n' + pmol
+            if re.search('//[^Mgw]', pmol): #insert \n in comment line
+              lncat = lncat + pmol + '\n'
+              #lncat = lncat + pmol.replace('//', '\n//') + '\n'
+              #lncat = lncat + '\n' + pmol
             else:
               lncat = lncat + pmol.rstrip() + ' '
 
